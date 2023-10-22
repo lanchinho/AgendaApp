@@ -1,0 +1,65 @@
+﻿@page "/"
+
+@using AgendaApp.Services.Dtos;
+@using AgendaApp.Services.Interfaces;
+
+@inject ITarefaService taskService;
+
+<div class="top-0 sticky bg-slate-700 text-white py-4">
+    <h1 class="mt-5 font-black text-center text-3xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-green-200 to-yellow-300">
+        Aplicativo Agenda
+    </h1>
+</div>
+
+<div class="grid grid-flow-row-dense grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-1 justify-center p-4">
+
+    @if (tasks != null)
+    {
+        foreach (var item in tasks)
+        {
+            <div class="mt-3">
+                <h3>@item.Title</h3>
+                <p><strong>@item.DueTime?.ToString("ddd dd/MM/yyyy")</strong></p>
+                <p>@item.Description</p>
+            </div>
+        }
+    }
+
+</div>
+
+<!-- componente de modal do formulário de cadastro -->
+<AddTarefa @ref="addTarefas" OnCreate="OnCreate"></AddTarefa>
+
+<!-- botão para abrir a janela de modal -->
+<button @onclick="AddTarefasOpen"
+        class="p-0 mb-4  mr-4  w-10 h-10 bg-slate-700 rounded-full mouse shadow focused absolute bottom-0 right-0">
+    <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block fill-gray-400 hover:fill-cyan-700">
+        <path d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
+                                    C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
+                                    C15.952,9,16,9.447,16,10z" />
+    </svg>
+</button>
+
+@code {
+
+    private AddTarefa addTarefas;
+    private List<TarefaDto> tasks;
+
+    protected override void OnInitialized()
+    {
+        tasks = taskService.GetAll().ToList();
+    }
+
+    //chamada para abrir a janela modal
+    public void AddTarefasOpen()
+    {
+        addTarefas.Open();
+    }
+
+    //função para realizar o cadastro da tarefa
+    protected void OnCreate(TarefaDto dto)
+    {
+        taskService.Create(dto);
+        tasks = taskService.GetAll().ToList();
+    }
+}
