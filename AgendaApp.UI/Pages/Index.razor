@@ -3,7 +3,7 @@
 @using AgendaApp.Services.Dtos;
 @using AgendaApp.Services.Interfaces;
 
-@inject ITarefaService taskService;
+@inject ITarefaService tarefaService;
 
 <div class="top-0 sticky bg-slate-700 text-white py-4">
     <h1 class="mt-5 font-black text-center text-3xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-green-200 to-yellow-300">
@@ -47,7 +47,7 @@
 
     protected override void OnInitialized()
     {
-        tasks = taskService.GetAll().ToList();
+        tasks = tarefaService.GetAll().ToList();
     }
 
     //chamada para abrir a janela modal
@@ -59,7 +59,7 @@
     //função para realizar o cadastro da tarefa
     protected void OnCreate(TarefaDto dto)
     {
-        taskService.Create(dto);
-        tasks = taskService.GetAll().ToList();
+        tarefaService.Create(dto);
+        tasks = tarefaService.GetAll().ToList();
     }
 }
