@@ -28,6 +28,7 @@ namespace AgendaApp.UI
             builder.Services.AddTransient<ITarefaRepository, TarefaRepository>();
             builder.Services.AddTransient<ITarefaService, TarefaService>();
 
+
             return builder.Build();
         }
     }

@@ -3,15 +3,14 @@ using AgendaApp.Services.Dtos;
 using AgendaApp.Services.Interfaces;
 using LiteDB;
 using AgendaApp.Data.Models;
-using System.Net.Http.Headers;
 
 namespace AgendaApp.Services.Services
 {
-    public class TarefaService : ITarefaService
+    public class TarefaServiceLocal : ITarefaService
     {
         private readonly ITarefaRepository _repository;
 
-        public TarefaService(ITarefaRepository repository)
+        public TarefaServiceLocal(ITarefaRepository repository)
         {
             _repository = repository;
         }
