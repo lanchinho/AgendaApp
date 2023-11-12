@@ -1,22 +1,40 @@
 ﻿@using AgendaApp.Services.Dtos;
 
-<div class="mt-2"
+@inject IJSRuntime JsRuntime
+
+<div class="mt-2 focused"
 	 style="border: 2px solid #ccc; border-radius: 10px; padding: 10px">
-	<div><strong>@Tarefa.Title</strong></div>
-	<div>@Tarefa.DueTime?.ToString("ddd dd/MM/yyyy")</div>
-	<div><small>@Tarefa.Description</small></div>
+
+	<div style="@(Tarefa.Done ? "text-decoration: line-through;" : ""); margin-bottom: 6px;">
+		<div><strong>@Tarefa.Title</strong></div>
+		<div><small>@Tarefa.DueTime?.ToString("ddd dd/MM/yyyy")</small></div>
+		<div><small>@Tarefa.Description</small></div>
+	</div>
+
 	@if (Tarefa.Done)
 	{
-		<button style="color: #198754" tabindex="0" @onclick="ToggleCheck">
-			<strong>Finalizado !</strong>
+		<button class="focused"
+				style="color: #198754; border: 1px solid #198754; border-radius: 10px; padding: 2px 6px 2px 6px"
+				tabindex="0" @onclick="ToggleCheck">
+			<small>Finalizado!</small>
 		</button>
 	}
 	else
 	{
-		<button style="color: #dc3545" tabindex="0" @onclick="ToggleCheck">
-			<strong>Pendente</strong>
+		<button class="focused"
+				style="background-color: #dc3545; border: 1px solid #dc3545; border-radius: 10px; padding: 2px 6px 2px 6px"
+				tabindex="0" @onclick="ToggleCheck">
+			<small>Pendente</small>
 		</button>
 	}
+	&nbsp;
+	<button class="focused"
+			style="background-color: #800000; border: 1px solid #800000; border-radius: 10px; padding: 2px 6px 2px 6px; color: #FFF"
+			tabindex="0" @onclick="DeleteTarefa">
+		<small>Excluir tarefa</small>
+	</button>
+
+
 </div>
 
 @code {
@@ -25,10 +43,13 @@
 	public TarefaDto Tarefa { get; set; }
 
 	/// <summary>
-	/// Parâmetro para retornar um evento
+	/// Parametro para retornar um evento
 	/// </summary>
 	[Parameter]
 	public EventCallback<TarefaDto> OnToggleCheck { get; set; }
+
+	[Parameter]
+	public EventCallback<TarefaDto> OnDeleteTarefa { get; set; }
 
 	/// <summary>
 	/// Evento para modificar o status da tarefa (feito ou pendente)
@@ -37,9 +58,19 @@
 	{
 		//modificar o status da tarefa
 		Tarefa.Done = !Tarefa.Done;
-
-		//retornar a notificação deste eventoi
+		//retornar a notificação deste evento
 		//avisando o componente Index.razor de que este evento foi feito
 		await OnToggleCheck.InvokeAsync(Tarefa);
+	}
+
+	/// <summary>
+	/// Evento para excluir uma Tarefa
+	/// </summary>
+	public async void DeleteTarefa()
+	{
+		var confirma = await JsRuntime.InvokeAsync<bool>("confirm", $"Deseja realmente excluir a tarefa '{Tarefa.Title}' ?");
+
+		if (confirma)
+			await OnDeleteTarefa.InvokeAsync(Tarefa);
 	}
 }

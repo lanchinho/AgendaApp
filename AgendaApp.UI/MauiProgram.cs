@@ -3,6 +3,7 @@ using AgendaApp.Data.Repositories;
 using AgendaApp.Services.Interfaces;
 using AgendaApp.Services.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 
 namespace AgendaApp.UI
 {
@@ -26,8 +27,7 @@ namespace AgendaApp.UI
 #endif
 
             builder.Services.AddTransient<ITarefaRepository, TarefaRepository>();
-            builder.Services.AddTransient<ITarefaService, TarefaService>();
-
+            builder.Services.AddTransient<ITarefaService, TarefaService>();            
 
             return builder.Build();
         }
