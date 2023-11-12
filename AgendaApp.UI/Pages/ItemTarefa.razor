@@ -1,0 +1,45 @@
+﻿@using AgendaApp.Services.Dtos;
+
+<div class="mt-2"
+	 style="border: 2px solid #ccc; border-radius: 10px; padding: 10px">
+	<div><strong>@Tarefa.Title</strong></div>
+	<div>@Tarefa.DueTime?.ToString("ddd dd/MM/yyyy")</div>
+	<div><small>@Tarefa.Description</small></div>
+	@if (Tarefa.Done)
+	{
+		<button style="color: #198754" tabindex="0" @onclick="ToggleCheck">
+			<strong>Finalizado !</strong>
+		</button>
+	}
+	else
+	{
+		<button style="color: #dc3545" tabindex="0" @onclick="ToggleCheck">
+			<strong>Pendente</strong>
+		</button>
+	}
+</div>
+
+@code {
+
+	[Parameter]
+	public TarefaDto Tarefa { get; set; }
+
+	/// <summary>
+	/// Parâmetro para retornar um evento
+	/// </summary>
+	[Parameter]
+	public EventCallback<TarefaDto> OnToggleCheck { get; set; }
+
+	/// <summary>
+	/// Evento para modificar o status da tarefa (feito ou pendente)
+	/// </summary>
+	public async void ToggleCheck()
+	{
+		//modificar o status da tarefa
+		Tarefa.Done = !Tarefa.Done;
+
+		//retornar a notificação deste eventoi
+		//avisando o componente Index.razor de que este evento foi feito
+		await OnToggleCheck.InvokeAsync(Tarefa);
+	}
+}

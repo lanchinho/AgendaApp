@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgendaApp.Data", "AgendaApp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 API REST", "4 API REST", "{E589D6ED-D2A9-47D9-AE12-8C924F128A48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendaApp.API", "AgendaApp.API\AgendaApp.API.csproj", "{69AB1D26-B29B-49C2-B726-A5397DBABC6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgendaApp.API", "AgendaApp.API\AgendaApp.API.csproj", "{69AB1D26-B29B-49C2-B726-A5397DBABC6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
